@@ -1,5 +1,6 @@
 package edu.uncc.amad.homework01;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -31,7 +32,11 @@ public class InboxActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
+        if(id == R.id.action_compose){
+            Intent compose = new Intent(this, ComposeMessageActivity.class);
+            startActivity(compose);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

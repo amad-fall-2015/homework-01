@@ -1,11 +1,31 @@
 package edu.uncc.amad.homework01;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.util.List;
 
 public class ComposeMessageActivity extends AppCompatActivity {
+
+    private ParseUser recepient;
+    private String selectedRegion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,5 +52,88 @@ public class ComposeMessageActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void selectRecipientClicked(View view) {
+        ParseQuery<ParseUser> usersQuery = ParseUser.getQuery();
+        usersQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(final List<ParseUser> users, ParseException e) {
+                if (e != null) {
+                    Log.e("hw1", "Error fetching users", e);
+                    return;
+                }
+                final CharSequence[] usersCharSequence = new CharSequence[users.size()];
+                int i=0;
+                for(ParseUser user : users){
+                    usersCharSequence[i++] = String.format("%s %s",user.get("firstName"), user.get("lastName"));
+                }
+                new AlertDialog.Builder(ComposeMessageActivity.this).setTitle("Users").setItems(usersCharSequence, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        recepient = users.get(which);
+                        ((TextView)findViewById(R.id.recepientTextView)).setText(usersCharSequence[which]);
+                        dialog.dismiss();
+                    }
+                }).setCancelable(true).create().show();
+            }
+        });
+    }
+
+    public void selectRegionClicked(View view) {
+        ParseQuery<ParseObject> regionQuery = ParseQuery.getQuery("Beacon");
+        regionQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> beacons, ParseException e) {
+                if (e != null) {
+                    Log.e("hw1", "Error fetching regions", e);
+                    return;
+                }
+                final CharSequence[] regionsCharSequence = new CharSequence[beacons.size()];
+                int i=0;
+                for(ParseObject beacon : beacons){
+                    regionsCharSequence[i++] = String.format("%s",beacon.get("location"));
+                }
+                new AlertDialog.Builder(ComposeMessageActivity.this).setTitle("Regions").setItems(regionsCharSequence, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectedRegion = regionsCharSequence[which].toString();
+                        ((TextView)findViewById(R.id.regionTextView)).setText(regionsCharSequence[which]);
+                        dialog.dismiss();
+                    }
+                }).setCancelable(true).create().show();
+            }
+        });
+    }
+    public void sendMessageClicked(View view){
+        String messageText = ((EditText) findViewById(R.id.messageEditText)).getText().toString();
+        if(recepient == null || selectedRegion == null || messageText.length() == 0){
+            Toast.makeText(ComposeMessageActivity.this, "Recepient, region, message shouldn't be null", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ParseObject message = new ParseObject("Message");
+        message.put("sender", ParseUser.getCurrentUser());
+        message.put("recepient", this.recepient);
+        message.put("isRead", false);
+        message.put("location", this.selectedRegion);
+
+        message.put("text", messageText);
+        message.put("isLocked", true);
+        message.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e("hw1", "Error saving message", e);
+                    return;
+                }
+                Toast.makeText(ComposeMessageActivity.this, "Message sent", Toast.LENGTH_SHORT).show();
+                findViewById(R.id.messageEditText).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 1000);
+            }
+        });
     }
 }
