@@ -4,13 +4,13 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
         android:id="@+id/readUnreadImageView"
-        android:background="@drawable/circle_blue"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:src="@drawable/circle_blue" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,7 +20,8 @@
         android:id="@+id/senderTextView"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/readUnreadImageView"
-        android:layout_toEndOf="@+id/readUnreadImageView" />
+        android:layout_toEndOf="@+id/readUnreadImageView"
+        android:layout_marginLeft="@dimen/horizontal_spacing" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,8 +30,9 @@
         android:text="Small Text"
         android:id="@+id/timeTextView"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBaseline="@+id/senderTextView" />
 
     <ImageView
         android:layout_width="@dimen/thumbnail_icon_size"
@@ -39,7 +41,8 @@
         android:layout_below="@+id/timeTextView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:background="@drawable/lock" />
+        android:layout_alignParentTop="false"
+        android:src="@drawable/lock" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -49,5 +52,6 @@
         android:id="@+id/regionTextView"
         android:layout_below="@+id/senderTextView"
         android:layout_toRightOf="@+id/readUnreadImageView"
-        android:layout_toEndOf="@+id/readUnreadImageView" />
+        android:layout_toEndOf="@+id/readUnreadImageView"
+        android:layout_marginLeft="@dimen/horizontal_spacing" />
 </RelativeLayout>

@@ -95,7 +95,7 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dip"
-        android:background="#000000"
+        android:background="#AAAAAA"
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="true"
         android:id="@+id/view2"
