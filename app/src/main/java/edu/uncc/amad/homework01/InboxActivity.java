@@ -133,6 +133,10 @@ public class InboxActivity extends AppCompatActivity {
         unlockMsgsQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
+                if(objects == null || objects.size() == 0){
+                    Toast.makeText(getBaseContext(), "Nothing to unlock", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 for(ParseObject message : objects){
                     message.put("isLocked", false);
                 }
