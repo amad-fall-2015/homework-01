@@ -24,7 +24,11 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         try {
+            //TODO: Need to change to actual login
             ParseUser user = ParseUser.logIn("agibson", "test1");
+            Intent inbox = new Intent(this, InboxActivity.class);
+            startActivity(inbox);
+            finish();
         } catch (ParseException e) {
             e.printStackTrace();
             Log.e("hw1", "Login error:", e);

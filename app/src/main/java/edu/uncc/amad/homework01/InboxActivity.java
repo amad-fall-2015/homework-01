@@ -169,7 +169,8 @@ public class InboxActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh) {
+            fetchMessages();
             return true;
         }
         if (id == R.id.action_compose) {
@@ -194,7 +195,7 @@ public class InboxActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
         beaconManager.stopRanging(region);
+        super.onPause();
     }
 }
