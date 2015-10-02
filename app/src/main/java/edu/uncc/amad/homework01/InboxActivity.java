@@ -175,6 +175,8 @@ public class InboxActivity extends AppCompatActivity {
         }
         if (id == R.id.action_compose) {
             Intent compose = new Intent(this, ComposeMessageActivity.class);
+            compose.putExtra("recepientUserName","ssharp");
+            compose.putExtra("selectedRegion", "Ashford 208");
             startActivity(compose);
             return true;
         }
