@@ -1,15 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="edu.uncc.amad.homework01.InboxActivity">
+    tools:context="edu.uncc.amad.homework01.ComposeMessageActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_compose"
-        android:orderInCategory="100"
-        android:title="Compose"
-        app:showAsAction="always" />
+
 </menu>

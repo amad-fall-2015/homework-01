@@ -1,40 +1,22 @@
 package edu.uncc.amad.homework01;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-
-public class LoginActivity extends AppCompatActivity {
+public class ComposeMessageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        if(ParseUser.getCurrentUser() != null){
-            Intent inbox = new Intent(this, InboxActivity.class);
-            startActivity(inbox);
-            finish();
-            return;
-        }
-        try {
-            ParseUser user = ParseUser.logIn("agibson", "test1");
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Log.e("hw1", "Login error:", e);
-        }
+        setContentView(R.layout.activity_compose_message);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
+        getMenuInflater().inflate(R.menu.menu_compose_message, menu);
         return true;
     }
 
@@ -49,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
