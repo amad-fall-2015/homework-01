@@ -1,17 +1,59 @@
 package edu.uncc.amad.homework01;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InboxActivity extends AppCompatActivity {
+
+    private List<ParseObject> messages = new ArrayList<>();
+    private ArrayAdapter<ParseObject> adapter;
+    private ProgressDialog progressDialogue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inbox);
+        progressDialogue = new ProgressDialog(this);
+        progressDialogue.setTitle("Loading Results");
+        progressDialogue.setCancelable(false);
+        progressDialogue.show();
+        this.adapter = new InboxItemsAdapter(this, R.layout.inbox_row_item, this.messages);
+        this.adapter.setNotifyOnChange(true);
+        ListView lv = (ListView) findViewById(R.id.listView);
+        lv.setAdapter(this.adapter);
+        ParseQuery<ParseObject> messagesQuery = ParseQuery.getQuery("Message");
+        messagesQuery.whereEqualTo("recepient", ParseUser.getCurrentUser());
+        messagesQuery.include("sender");
+        messagesQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e != null) {
+                    Log.e("hw1", "Error fetching messages", e);
+                    return;
+                }
+                messages.clear();
+                messages.addAll(objects);
+                adapter.notifyDataSetChanged();
+                progressDialogue.dismiss();
+            }
+        });
     }
 
     @Override
